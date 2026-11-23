@@ -94,13 +94,24 @@ const KNOWN: Record<string, PolicyLink[]> = {
     { type: "privacy", url: "https://policies.google.com/privacy?hl=en" },
     { type: "terms", url: "https://www.youtube.com/static?template=terms" },
   ],
+  "discord.com": [
+    { type: "privacy", url: "https://discord.com/privacy" },
+    { type: "terms", url: "https://discord.com/terms" },
+  ],
+  // The homepage links a browser comparison page ("compare-privacy") that link discovery mistakes for the policy.
+  "duckduckgo.com": [
+    { type: "privacy", url: "https://duckduckgo.com/privacy" },
+    { type: "terms", url: "https://duckduckgo.com/terms" },
+  ],
+  // Terms and privacy policy are one page.
+  "signal.org": [{ type: "privacy", url: "https://signal.org/legal/" }],
 };
 
 const KNOWN_NAMES: Record<string, string> = {
   "tiktok.com": "TikTok", "reddit.com": "Reddit", "spotify.com": "Spotify", "x.com": "X (Twitter)", "instagram.com": "Instagram",
   "facebook.com": "Facebook", "netflix.com": "Netflix", "amazon.com": "Amazon", "linkedin.com": "LinkedIn", "google.com": "Google",
   "youtube.com": "YouTube", "duckduckgo.com": "DuckDuckGo", "github.com": "GitHub", "whatsapp.com": "WhatsApp", "paypal.com": "PayPal",
-  "ebay.com": "eBay", "openai.com": "OpenAI", "chatgpt.com": "ChatGPT",
+  "ebay.com": "eBay", "openai.com": "OpenAI", "chatgpt.com": "ChatGPT", "discord.com": "Discord", "signal.org": "Signal",
 };
 
 export function knownName(host: string): string | null {
