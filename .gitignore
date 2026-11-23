@@ -1,0 +1,12 @@
+node_modules
+.next
+.data
+.env
+.env.local
+.output
+.wxt
+dist
+*.tsbuildinfo
+.expo
+apps/mobile/ios
+apps/mobile/android
