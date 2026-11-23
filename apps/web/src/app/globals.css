@@ -235,19 +235,20 @@ p {
 .deck-slide { opacity: 0; transform: translateX(48px) scale(0.985); transition: opacity 600ms var(--ease-out-strong), transform 900ms var(--ease-out-strong); }
 .deck-slide[data-dir="past"] { transform: translateX(-48px) scale(0.985); }
 .deck-slide[data-active="true"] { opacity: 1; transform: none; }
-.deck-slide .st { opacity: 0; transform: translateY(22px); filter: blur(10px); transition: opacity 300ms, transform 300ms, filter 300ms; }
-.deck-slide[data-active="true"] .st {
+.deck-slide .st, .reveal-group .st { opacity: 0; transform: translateY(22px); filter: blur(10px); transition: opacity 300ms, transform 300ms, filter 300ms; }
+.deck-slide[data-active="true"] .st, .reveal-group[data-active="true"] .st {
   opacity: 1; transform: none; filter: none;
   transition: opacity 700ms var(--ease-out-strong), transform 1000ms var(--ease-out-strong), filter 800ms var(--ease-out-strong);
   transition-delay: calc(180ms + var(--i, 0) * 110ms);
 }
 /* The grade lands like a rubber stamp. */
 @keyframes stamp { 0% { transform: scale(1.6) rotate(-8deg); opacity: 0; } 60% { transform: scale(0.94) rotate(-3deg); opacity: 1; } 100% { transform: scale(1) rotate(-3deg); } }
-.deck-slide[data-active="true"] .deck-stamp { animation: stamp 700ms var(--ease-out-strong) 1300ms both; }
+.deck-slide[data-active="true"] .deck-stamp, .reveal-group[data-active="true"] .deck-stamp { animation: stamp 700ms var(--ease-out-strong) 1300ms both; }
 @media (prefers-reduced-motion: reduce) {
-  .deck-slide, .deck-slide .st { transition: opacity 200ms !important; transform: none !important; filter: none !important; }
+  .deck-slide, .deck-slide .st, .reveal-group .st { transition: opacity 200ms !important; transform: none !important; filter: none !important; }
 }
 
 @media print {
+  .reveal-group .st,
   .rise { animation: none !important; opacity: 1 !important; transform: none !important; }
 }

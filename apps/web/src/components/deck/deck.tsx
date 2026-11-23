@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { AgreeStory } from "../agree-story";
 import { PolicyReport } from "../policy-report";
 import { cx, GradeBadge, Logo } from "../ui";
+import { st, Swept, useCount, useLinger } from "./motion";
 import { Scene3D } from "./scene-3d";
 
 export type DeckData = {
@@ -15,55 +16,6 @@ export type DeckData = {
 };
 
 type SlideProps = { active: boolean; data: DeckData };
-
-const st = (i: number) => ({ "--i": i }) as React.CSSProperties;
-
-/** Keeps heavy content mounted briefly after a slide leaves, so it can fade out. */
-function useLinger(active: boolean, ms = 700) {
-  const [on, setOn] = useState(active);
-  useEffect(() => {
-    if (active) return setOn(true);
-    const t = setTimeout(() => setOn(false), ms);
-    return () => clearTimeout(t);
-  }, [active, ms]);
-  return on;
-}
-
-/** Counts toward a number when the slide is shown; exponential ease-out. */
-function useCount(active: boolean, from: number, to: number, ms: number, delay = 300, log = false) {
-  const [v, setV] = useState(from);
-  useEffect(() => {
-    if (!active) return setV(from);
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return setV(to);
-    let raf = 0;
-    const t0 = performance.now() + delay;
-    const loop = (now: number) => {
-      const p = Math.min(1, Math.max(0, (now - t0) / ms));
-      const e = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);
-      // Log scale keeps huge ranges moving visibly until the end.
-      setV(log ? from * Math.pow(to / from, e) : from + (to - from) * e);
-      if (p < 1) raf = requestAnimationFrame(loop);
-    };
-    raf = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(raf);
-  }, [active, from, to, ms, delay]);
-  return v;
-}
-
-/** A highlighter that sweeps across once the slide has settled. */
-function Swept({ active, delay, tone = "var(--mark-caution)", children }: { active: boolean; delay: number; tone?: string; children: React.ReactNode }) {
-  const [on, setOn] = useState(false);
-  useEffect(() => {
-    if (!active) return setOn(false);
-    const t = setTimeout(() => setOn(true), delay);
-    return () => clearTimeout(t);
-  }, [active, delay]);
-  return (
-    <span className="sweep" data-on={on} style={{ "--sweep": tone } as React.CSSProperties}>
-      {children}
-    </span>
-  );
-}
 
 function Title({ active }: SlideProps) {
   const live = useLinger(active);
